@@ -25,9 +25,19 @@ app.get('/apps', (req, res) => {
             res.status(400).send('Please send only a "rating" or "app"');
         }
         sortedApps.sort((a, b) => {
-            if (a[sort] < b[sort]) {
+            let aSort, bSort;
+            
+            if(typeof a[sort] === 'string') {
+                aSort = a[sort].toLowerCase();
+                bSort = b[sort].toLowerCase();
+            } else {
+                aSort = a[sort];
+                bSort = b[sort];
+            }
+            
+            if (aSort < bSort) {
                 return -1;
-            } else if (a[sort] > b[sort]) {
+            } else if (aSort > bSort) {
                 return 1;
             } else {
                 return 0;
