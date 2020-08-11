@@ -5,7 +5,13 @@ const app = express();
 
 app.use(morgan('common'));
 
+
+const apps = require('./playstore.js');
+
 app.get('/apps', (req, res) => {
+    const { sort, genres } = req.query;
+
+    res.json(apps);
 
 });
 
