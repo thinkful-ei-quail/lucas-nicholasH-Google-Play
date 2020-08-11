@@ -13,7 +13,10 @@ const apps = require('./playstore.js');
 app.get('/apps', (req, res) => {
     const { sort, genres } = req.query;
 
-    const sortedApps = [...apps];
+    let sortedApps = [...apps];
+    sortedApps.map(app => {
+        return app['App'].toLowerCase()
+    });
 
     const sortVals = ['Rating', 'App'];
 
@@ -30,11 +33,18 @@ app.get('/apps', (req, res) => {
                 return 0;
             }
         });
-
-        res.json(sortedApps);
     }
 
-    res.json(apps);
+    const genreVals = ['Action', 'Puzzle', 'Strategy', 'Casual', 'Arcade', 'Card'];
+
+    if(genres) {
+        if(!genreVals.includes(genres)) {
+            res.status(400).send('Please send a valid genre');
+        }
+        sortedApps = sortedApps.filter(app => app["Genres"] === genres);
+    }
+
+    res.json(sortedApps);
 
 });
 
